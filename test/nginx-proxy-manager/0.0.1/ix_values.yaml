@@ -1,0 +1,48 @@
+image:
+  repository: jc21/nginx-proxy-manager
+  pullPolicy: IfNotPresent
+  tag: latest
+
+securityContext:
+  readOnlyRootFilesystem: false
+  runAsNonRoot: false
+
+podSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
+
+env:
+  TZ: "Europe/London"
+
+hostNetwork: true
+
+service:
+  main:
+    enabled: true
+    type: Simple
+    ports:
+      main:
+        enabled: true
+        port: 80
+        targetPort: 80
+        protocol: HTTP
+      admin:
+        enabled: true
+        port: 81
+        targetPort: 81
+        protocol: HTTP
+      websecure:
+        enabled: true
+        port: 443
+        targetPort: 443
+        protocol: HTTPS
+
+persistence:
+  varrun:
+    enabled: true
+  data:
+    enabled: true
+    mountPath: "/data"
+  letsencrypt:
+    enabled: true
+    mountPath: "/etc/letsencrypt"

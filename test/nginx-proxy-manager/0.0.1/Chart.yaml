@@ -1,0 +1,28 @@
+apiVersion: v2
+kubeVersion: ">=1.16.0-0"
+name: nginx-proxy-manager
+version: 0.0.1
+appVersion: "v2.9.18"
+description: nginx-proxy-manager allows you to easily forward to your websites running at home or otherwise, including free SSL.
+type: application
+deprecated: false
+home: https://nginxproxymanager.com/
+icon: https://raw.githubusercontent.com/danveitch76/charts-catalog/main/test/nginx-proxy-manager/0.0.1/icon/logo.png
+keywords:
+  - nginx-proxy-manager
+sources:
+  - https://github.com/NginxProxyManager/nginx-proxy-manager
+dependencies:
+- name: common
+  repository: https://library-charts.truecharts.org
+  version: 10.2.0
+  # condition:
+maintainers:
+- email: dan.veitch@gmail.com
+  name: Dan Veitch
+  url: https://github.com/danveitch76
+annotations:
+  truecharts.org/catagories: |
+    - test
+  truecharts.org/SCALE-support: "true"
+  truecharts.org/grade: t
