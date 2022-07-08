@@ -1,0 +1,34 @@
+image:
+  repository: henrywhitaker3/speedtest-tracker
+  pullPolicy: IfNotPresent
+  tag: latest
+
+securityContext:
+  readOnlyRootFilesystem: false
+  runAsNonRoot: false
+
+podSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
+
+env:
+  TZ: "Europe/London"
+  OOKLA_EULA_GDPR: false
+
+service:
+  main:
+    enabled: true
+    type: Simple
+    ports:
+      main:
+        enabled: true
+        port: 8765
+        targetPort: 80
+        protocol: HTTP
+
+persistence:
+  varrun:
+    enabled: true
+  config:
+    enabled: true
+    mountPath: "/config"
