@@ -40,5 +40,10 @@ jobs:
         run: |
           set -euo pipefail
           while IFS= read -r -d '' chart; do
-            helm lint --strict "$(dirname "$chart")"
-          done < <(find library test -name Chart.yaml -print0)
+            directory="$(dirname "$chart")"
+            if [[ -f "$directory/ix_values.yaml" ]]; then
+              helm lint --strict "$directory" -f "$directory/ix_values.yaml"
+            else
+              helm lint --strict "$directory"
+            fi
+          done < <(find library test stable -name Chart.yaml -print0)
