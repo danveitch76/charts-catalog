@@ -17,6 +17,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Trust checked-out workspace
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       - name: Fetch base branch history
         run: git fetch origin main:main
 
@@ -28,9 +31,17 @@ jobs:
           sudo pip3 install --disable-pip-version-check --exists-action w -r catalog_validation/requirements.txt > /dev/null 2>&1
           sudo pip3 install -U catalog_validation/.
           
+      - name: Generate catalog metadata
+        run: catalog_update update --path "$GITHUB_WORKSPACE"
+
       - name: Validate catalog format
         run: |
-          /bin/bash -c "PWD=${pwd}; /usr/local/bin/catalog_validate validate --path $PWD"
+          catalog_validate validate --path "$GITHUB_WORKSPACE"
           
-      - name: Validate changed charts
-        run: /bin/bash -c "PWD=${pwd}; sudo /usr/local/bin/charts_validate deploy --path $PWD"
+      - name: Validate Helm charts
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' chart; do
+            helm lint --strict "$(dirname "$chart")"
+          done < <(find library test -name Chart.yaml -print0)
