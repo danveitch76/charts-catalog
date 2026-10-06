@@ -13,12 +13,12 @@ jobs:
         run: /bin/bash -c "curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash"
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Fetch base branch history
-        run: git fetch origin master:master
+        run: git fetch origin main:main
 
       - name: Setup catalog validation
         run: |
