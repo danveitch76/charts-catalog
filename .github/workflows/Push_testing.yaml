@@ -11,6 +11,11 @@ jobs:
     steps:
     - uses: actions/checkout@v7
       name: Checkout
+      with:
+        fetch-depth: 0
+
+    - name: Trust checked-out workspace
+      run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       
     - name: Generate catalog metadata
       run: catalog_update update --path "$GITHUB_WORKSPACE"
